@@ -58,9 +58,9 @@ class Main extends Component {
   render() {
     const approve = this.getApprove();
     let btn = <div className="alert alert-danger">Form is not filled out correctly</div>;
-    if (approve && approve[0] > 0) {
+    if (approve !== false && approve[0] > 0) {
       btn = <div className="alert alert-danger">The market does not have enough Air tokens</div>
-    } else if (approve && approve[1] <= 0) {
+    } else if (approve !== false && approve[1] <= 0) {
       btn = (
         <div>
           <span>Sum &asymp; {approve[2]} ETH</span>
@@ -68,7 +68,7 @@ class Main extends Component {
           <button type="submit" className="btn btn-default">Buy</button>
         </div>
       )
-    } else if (approve) {
+    } else if (approve !== false) {
       btn = (
         <div>
           <span>Sum &asymp; {approve[2]} ETH</span>

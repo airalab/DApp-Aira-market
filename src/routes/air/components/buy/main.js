@@ -45,11 +45,11 @@ class Main extends Component {
   render() {
     const approve = this.getApprove();
     let btn = <div className="alert alert-danger">Form is not filled out correctly</div>;
-    if (approve && approve <= 0) {
+    if (approve !== false && approve <= 0) {
       btn = (
         <button type="submit" className="btn btn-default">Buy</button>
       )
-    } else if (approve) {
+    } else if (approve !== false) {
       btn = (
         <button
           className="btn btn-warning"
