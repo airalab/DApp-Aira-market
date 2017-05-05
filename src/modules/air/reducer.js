@@ -5,7 +5,9 @@ import { MARKET_AIR_ADDR } from '../../config/config'
 const initialState = {
   market: MARKET_AIR_ADDR,
   info: {
-    name: ''
+    name: '',
+    base: '',
+    quote: ''
   },
   isLoad: false,
   isLoadMarket: false,
@@ -20,12 +22,16 @@ const initialState = {
   tokenBase: {
     address: '',
     balance: 0,
-    approve: 0
+    approve: 0,
+    decimals: 0,
+    balanceEth: 0
   },
   tokenQuote: {
     address: '',
     balance: 0,
-    approve: 0
+    approve: 0,
+    decimals: 0,
+    balanceEth: 0
   }
 }
 
@@ -35,7 +41,7 @@ export default function air(state = initialState, action) {
       if (action.payload === 'token_base') {
         return { ...state, isLoadTokenBase: true }
       } else if (action.payload === 'token_quote') {
-        return { ...state, isLoadTokenBase: true }
+        return { ...state, isLoadTokenQuote: true }
       } else if (action.payload === 'asks') {
         return { ...state, isLoadAsks: true }
       } else if (action.payload === 'bids') {
@@ -55,8 +61,10 @@ export default function air(state = initialState, action) {
     case LOAD_TOKEN: {
       if (action.payload.type === 'base') {
         return { ...state, tokenBase: { ...action.payload }, isLoadTokenBase: false }
+      } else if (action.payload.type === 'quote') {
+        return { ...state, tokenQuote: { ...action.payload }, isLoadTokenQuote: false }
       }
-      return { ...state, tokenQuote: { ...action.payload }, isLoadTokenQuote: false }
+      return state;
     }
 
     case LOAD_ASKS_ORDERS: {

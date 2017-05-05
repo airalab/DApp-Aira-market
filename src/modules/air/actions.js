@@ -64,39 +64,6 @@ export function events(marketAddr) {
   }
 }
 
-export function loadMarket(marketAddr) {
-  return (dispatch) => {
-    dispatch({
-      type: START_LOAD,
-      payload: 'market'
-    })
-    getContractByAbiName('Market', marketAddr)
-      .then(contract => (
-        Promise.join(
-          contract.call('name'),
-          contract.call('base'),
-          contract.call('quote'),
-          (name, base, quote) => (
-            {
-              name,
-              base,
-              quote
-            }
-          )
-        )
-      ))
-      .then((info) => {
-        dispatch({
-          type: LOAD_MARKET,
-          payload: {
-            ...info
-          }
-        })
-        dispatch(events(marketAddr));
-      })
-  }
-}
-
 export function loadAsks(marketAddr) {
   return (dispatch) => {
     dispatch({
@@ -108,8 +75,10 @@ export function loadAsks(marketAddr) {
     getContractByAbiName('Market', marketAddr)
       .then((contract) => {
         market = contract;
-        return market.call('decimals')
+        return market.call('quote')
       })
+      .then(result => getContractByAbiName('Token', result))
+      .then(quote => quote.call('decimals'))
       .then((result) => {
         decimals = result;
         return market.call('asksLength')
@@ -141,8 +110,10 @@ export function loadBids(marketAddr) {
     getContractByAbiName('Market', marketAddr)
       .then((contract) => {
         market = contract;
-        return market.call('decimals')
+        return market.call('quote')
       })
+      .then(result => getContractByAbiName('Token', result))
+      .then(quote => quote.call('decimals'))
       .then((result) => {
         decimals = result;
         return market.call('bidsLength')
@@ -181,7 +152,8 @@ export function loadToken(tokenAddr, type, marketAddr) {
               address: tokenAddr,
               balance: formatDecimals(balance, decimals),
               approve: formatDecimals(allowance, decimals),
-              balanceEth
+              balanceEth,
+              decimals: Number(decimals)
             }
           )
         )
@@ -194,15 +166,50 @@ export function loadToken(tokenAddr, type, marketAddr) {
             ...token
           }
         })
-        listenAddress(tokenAddr, 'loadToken', () => {
+        listenAddress(tokenAddr, 'loadTokenAir' + type, () => {
+          console.log(tokenAddr, 'loadTokenAir' + type);
           dispatch(loadToken(tokenAddr, type, marketAddr));
-          // dispatch(loadBids(marketAddr));
         })
-        // listenAddress(marketAddr, 'loadMarket', () => {
-        //   dispatch(loadToken(tokenAddr, type, marketAddr))
-        //   dispatch(loadAsks(marketAddr));
-        //   dispatch(loadBids(marketAddr));
-        // })
+      })
+  }
+}
+
+export function loadMarket(marketAddr) {
+  return (dispatch) => {
+    dispatch({
+      type: START_LOAD,
+      payload: 'market'
+    })
+    getContractByAbiName('Market', marketAddr)
+      .then(contract => (
+        Promise.join(
+          contract.call('name'),
+          contract.call('base'),
+          contract.call('quote'),
+          (name, base, quote) => (
+            {
+              name,
+              base,
+              quote
+            }
+          )
+        )
+      ))
+      .then((info) => {
+        dispatch({
+          type: LOAD_MARKET,
+          payload: {
+            ...info
+          }
+        })
+        dispatch(events(marketAddr));
+        listenAddress(marketAddr, 'loadMarketAir', () => {
+          console.log(marketAddr, 'loadMarketAir');
+          dispatch(loadAsks(marketAddr));
+          dispatch(loadBids(marketAddr));
+          dispatch(loadToken(info.base, 'base', marketAddr));
+          dispatch(loadToken(info.quote, 'quote', marketAddr));
+        })
       })
   }
 }

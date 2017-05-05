@@ -72,8 +72,12 @@ class Container extends Component {
 }
 
 function mapStateToProps(state) {
+  let isLoadMarket = state.air.isLoadMarket;
+  if (state.air.info.base === '') {
+    isLoadMarket = true;
+  }
   return {
-    isLoadMarket: state.air.isLoadMarket,
+    isLoadMarket,
     market: state.air.market,
     info: state.air.info
   }
