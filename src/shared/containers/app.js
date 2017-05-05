@@ -8,6 +8,7 @@ import { setMarket } from '../../modules/market/actions';
 
 import Header from '../components/app/header'
 import Footer from '../components/app/footer'
+import Plugin from '../components/app/plugin'
 
 import './style.css'
 
@@ -27,10 +28,10 @@ class App extends Component {
       if (isAccounts()) {
         content = this.props.children
       } else {
-        content = <p>нет аккаунтов</p>
+        content = <p>not accounts</p>
       }
     } else {
-      content = <p>нужен mist</p>
+      content = <Plugin />
     }
 
     const style = {
