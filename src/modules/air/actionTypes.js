@@ -1,0 +1,5 @@
+export const START_LOAD = 'AIR_START_LOAD'
+export const LOAD_MARKET = 'AIR_LOAD_MARKET'
+export const LOAD_TOKEN = 'AIR_LOAD_TOKEN'
+export const LOAD_ASKS_ORDERS = 'AIR_LOAD_ASKS_ORDERS'
+export const LOAD_BIDS_ORDERS = 'AIR_LOAD_BIDS_ORDERS'

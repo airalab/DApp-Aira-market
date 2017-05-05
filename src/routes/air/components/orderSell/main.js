@@ -5,7 +5,7 @@ class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      price: 100
+      value: 1
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -13,10 +13,10 @@ class Main extends Component {
   }
 
   getApprove() {
-    if (Number(this.state.price) > 0) {
-      const price = new BigNumber(this.state.price);
+    if (Number(this.state.value) > 0) {
+      const value = new BigNumber(this.state.value);
       const approve = new BigNumber(this.props.approve);
-      return price.minus(approve).toNumber();
+      return value.minus(approve).toNumber();
     }
     return false;
   }
@@ -25,7 +25,7 @@ class Main extends Component {
     let value = event.target.value;
     if (value !== '') {
       value = Number(value);
-      if (event.target.name === 'price') {
+      if (event.target.name === 'value') {
         value = new BigNumber(value)
         value = value.toFixed()
       }
@@ -43,7 +43,7 @@ class Main extends Component {
     let btn = <div className="alert alert-danger">Form is not filled out correctly</div>;
     if (approve && approve <= 0) {
       btn = (
-        <button type="submit" className="btn btn-default">Buy</button>
+        <button type="submit" className="btn btn-default">Sell</button>
       )
     } else if (approve) {
       btn = (
@@ -64,13 +64,13 @@ class Main extends Component {
     }
     return (
       <div className="panel panel-default">
-        <div className="panel-heading"><h4 className="panel-title">Create new ASK lot for purchase ONE robot liability on Sensor market</h4></div>
+        <div className="panel-heading"><h4 className="panel-title">Sell Air</h4></div>
         <div className="panel-body">
           <form onSubmit={this.handleSubmit}>
             <div className="form-group">
-              <label className="control-label">Amount of Air tokens to ASK one robot liability:</label>
+              <label className="control-label">Amount of Air tokens:</label>
               <div className="input-group">
-                <input value={this.state.price} onChange={this.handleChange} name="price" type="text" className="form-control form-control-b" />
+                <input value={this.state.value} onChange={this.handleChange} name="value" type="text" className="form-control form-control-b" />
                 <div className="input-group-addon">AIR</div>
               </div>
             </div>

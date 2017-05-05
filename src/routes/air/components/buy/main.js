@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 import BigNumber from 'bignumber.js'
 
+global.BigNumber = BigNumber;
+
 class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      price: 100
+      value: 1,
+      price: 1
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -13,10 +16,11 @@ class Main extends Component {
   }
 
   getApprove() {
-    if (Number(this.state.price) > 0) {
+    if (Number(this.state.price) > 0 && Number(this.state.value) > 0) {
       const price = new BigNumber(this.state.price);
+      const value = new BigNumber(this.state.value);
       const approve = new BigNumber(this.props.approve);
-      return price.minus(approve).toNumber();
+      return price.times(value).minus(approve).toNumber();
     }
     return false;
   }
@@ -25,7 +29,7 @@ class Main extends Component {
     let value = event.target.value;
     if (value !== '') {
       value = Number(value);
-      if (event.target.name === 'price') {
+      if (event.target.name === 'value') {
         value = new BigNumber(value)
         value = value.toFixed()
       }
@@ -58,20 +62,27 @@ class Main extends Component {
             e.preventDefault();
           }}
         >
-          Add to approve {approve} AIR
+          Add to approve {approve} ETH
         </button>
       )
     }
     return (
       <div className="panel panel-default">
-        <div className="panel-heading"><h4 className="panel-title">Create new ASK lot for purchase ONE robot liability on Sensor market</h4></div>
+        <div className="panel-heading"><h4 className="panel-title">Add order buy Air</h4></div>
         <div className="panel-body">
           <form onSubmit={this.handleSubmit}>
             <div className="form-group">
-              <label className="control-label">Amount of Air tokens to ASK one robot liability:</label>
+              <label className="control-label">Amount of Air tokens:</label>
+              <div className="input-group">
+                <input value={this.state.value} onChange={this.handleChange} name="value" type="text" className="form-control form-control-b" />
+                <div className="input-group-addon">AIR</div>
+              </div>
+            </div>
+            <div className="form-group">
+              <label className="control-label">Price one Air token to Ether:</label>
               <div className="input-group">
                 <input value={this.state.price} onChange={this.handleChange} name="price" type="text" className="form-control form-control-b" />
-                <div className="input-group-addon">AIR</div>
+                <div className="input-group-addon">ETH</div>
               </div>
             </div>
             {btn}
