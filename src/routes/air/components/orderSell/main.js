@@ -63,21 +63,16 @@ class Main extends Component {
       )
     }
     return (
-      <div className="panel panel-default">
-        <div className="panel-heading"><h4 className="panel-title">Sell Air</h4></div>
-        <div className="panel-body">
-          <form onSubmit={this.handleSubmit}>
-            <div className="form-group">
-              <label className="control-label">Amount of Air tokens:</label>
-              <div className="input-group">
-                <input value={this.state.value} onChange={this.handleChange} name="value" type="text" className="form-control form-control-b" />
-                <div className="input-group-addon">AIR</div>
-              </div>
-            </div>
-            {btn}
-          </form>
+      <form onSubmit={this.handleSubmit}>
+        <div className="form-group">
+          <label className="control-label">Amount of Air tokens:</label>
+          <div className="input-group">
+            <input value={this.state.value} onChange={this.handleChange} name="value" type="text" className="form-control form-control-b" />
+            <div className="input-group-addon">AIR</div>
+          </div>
         </div>
-      </div>
+        {btn}
+      </form>
     );
   }
 }

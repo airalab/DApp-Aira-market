@@ -3,10 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Token from './token';
 import AddBalance from './addBalance';
-import Buy from './buy';
-import Sell from './sell';
-import OrderBuy from './orderBuy';
-import OrderSell from './orderSell';
+import { Buy, Sell } from '../components/order';
 import Bids from './bids';
 import Asks from './asks';
 import EthLink from '../../../shared/components/common/ethLink';
@@ -46,15 +43,6 @@ class Container extends Component {
           </div>
           <div className="col-md-6">
             <Buy />
-          </div>
-        </div>
-        <h2>Close order</h2>
-        <div className="row">
-          <div className="col-md-6">
-            <OrderBuy />
-          </div>
-          <div className="col-md-6">
-            <OrderSell />
           </div>
         </div>
         <h2>Orders</h2>
