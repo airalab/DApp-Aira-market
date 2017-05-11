@@ -7,11 +7,7 @@ import addresses from './address'
 import Contract from './contract'
 
 export function getWeb3() {
-  if (typeof web3 !== 'undefined' && typeof Web3 !== 'undefined') {
-    web3 = new Web3(web3.currentProvider);
-  } else if (typeof Web3 !== 'undefined') {
-    web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
-  } else if (typeof web3 === 'undefined' && typeof Web3 === 'undefined') {
+  if (typeof web3 === 'undefined') {
     return false
   }
   return web3
@@ -67,14 +63,6 @@ export function getLogs(options, cb) {
       cb(result);
     }
   });
-  // return new Promise((resolve, reject) => {
-  //   web3.eth.filter(options, (error, result) => {
-  //     if (error) {
-  //       reject(error);
-  //     }
-  //     resolve(result);
-  //   });
-  // });
 }
 
 export function transfer(from, to, value, isEther = true) {

@@ -3,12 +3,11 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import cookie from 'react-cookie'
 import Notifications from 'react-notification-system-redux';
-import { getWeb3, isAccounts, runListener } from '../../utils/web3'
+import { runListener } from '../../utils/web3'
 import { setMarket } from '../../modules/market/actions';
 
 import Header from '../components/app/header'
 import Footer from '../components/app/footer'
-import Plugin from '../components/app/plugin'
 
 import './style.css'
 
@@ -22,18 +21,6 @@ class App extends Component {
   }
 
   render() {
-    // const content = this.props.children
-    let content
-    if (getWeb3()) {
-      if (isAccounts()) {
-        content = this.props.children
-      } else {
-        content = <p>not accounts</p>
-      }
-    } else {
-      content = <Plugin />
-    }
-
     const style = {
       Containers: {
         DefaultStyle: {
@@ -46,11 +33,10 @@ class App extends Component {
         },
       }
     };
-
     return (<div>
       <Header title={this.props.title} />
       <div className="container" id="maincontainer">
-        {content}
+        {this.props.children}
       </div>
       <Footer />
       <Notifications

@@ -1,17 +1,54 @@
+/* eslint global-require: 0 */
 import React from 'react'
 import { render } from 'react-dom'
-import { Provider } from 'react-redux'
-import { Router, hashHistory } from 'react-router'
-import configureStore from './config/store'
-import { routes } from './config/routes'
+import Plugin from './shared/components/app/plugin'
 
-const store = configureStore()
-
-setTimeout(() => {
+const startApp = () => {
+  require('./app');
+}
+const notWeb3 = () => {
   render(
-    <Provider store={store}>
-      <Router history={hashHistory} routes={routes(store)} />
-    </Provider>,
+    <div className="container" id="maincontainer">
+      <Plugin />
+    </div>,
     document.getElementById('root')
   )
-}, 2000);
+}
+const notAccounts = () => {
+  render(
+    <div className="container" id="maincontainer">
+      <p>not accounts</p>
+    </div>,
+    document.getElementById('root')
+  )
+}
+const loader = () => {
+  render(
+    <div className="container" id="maincontainer">
+      <p>...</p>
+    </div>,
+    document.getElementById('root')
+  )
+}
+let stepCurrent = 0;
+const stepMax = 5;
+const interval = setInterval(() => {
+  if (typeof web3 !== 'undefined' && web3.eth.accounts.length > 0) {
+    clearInterval(interval);
+    startApp();
+    return;
+  } else if (stepCurrent >= stepMax) {
+    clearInterval(interval);
+    if (typeof web3 === 'undefined') {
+      notWeb3();
+    } else {
+      notAccounts();
+    }
+    return;
+  }
+  stepCurrent += 1;
+  if (typeof web3 !== 'undefined' && web3.eth.accounts.length <= 0) {
+    console.log('load accounts', web3.eth.accounts);
+  }
+  loader();
+}, 1000);
